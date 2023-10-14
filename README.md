@@ -1,4 +1,4 @@
-# sentence [![Go Reference](https://pkg.go.dev/badge/github.com/azzzak/sentence.svg)](https://pkg.go.dev/github.com/azzzak/sentence)
+# sentence [![Go Reference](https://pkg.go.dev/badge/github.com/azzzak/sentence.svg)](https://pkg.go.dev/github.com/azzzak/sentence) [![Go Report Card](https://goreportcard.com/badge/github.com/azzzak/sentence)](https://goreportcard.com/report/github.com/azzzak/sentence)
 
 Библиотека для добавления вариативности текстовым сообщениям. Также содержит функции для согласования слов с числительными. Основана на `text/template`, все возможности этого пакета доступны в шаблонах.
 
@@ -25,6 +25,8 @@ var dec = func(n int) int {
 	return n - 1
 }
 
+var templ = "{{pluraln .Bottles `бутылка|бутылки|бутылок`}} пива {{plural .Bottles .Forms}} на столе, одна из них {{any `упала|разбилась|грохнулась`}} и их осталось {{decrease .Bottles}}"
+
 func main() {
 	s, err := sentence.New(sentence.WithFunc("decrease", dec))
 	if err != nil {
@@ -32,7 +34,7 @@ func main() {
 	}
 
 	for i := 99; i > 90; i-- {
-		msg := s.MustRender("{{pluraln .Bottles `бутылка|бутылки|бутылок`}} пива {{plural .Bottles .Forms}} на столе, одна из них {{any `упала|разбилась|грохнулась`}} и их осталось {{decrease .Bottles}}", struct {
+		msg := s.MustRender(templ, struct {
 			Bottles int
 			Forms   []string
 		}{
