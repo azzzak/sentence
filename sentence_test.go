@@ -2,6 +2,8 @@ package sentence
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var pattern = "{{pluraln .Bottles `бутылка|бутылки|бутылок`}} пива {{plural .Bottles `стояла|стояли|стояло`}} на столе"
@@ -57,9 +59,7 @@ func TestSentence_MustRender(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			s, _ := New()
 			got := s.MustRender(tt.args.pattern, tt.args.data)
-			if got != tt.want {
-				t.Errorf("Sentence.MustRender() = %v, want %v", got, tt.want)
-			}
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }

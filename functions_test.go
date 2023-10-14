@@ -3,6 +3,8 @@ package sentence
 import (
 	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_initPlural(t *testing.T) {
@@ -74,13 +76,12 @@ func Test_initPlural(t *testing.T) {
 			fn := initPlural("ru", "|")
 
 			got, err := fn(tt.args.num, tt.args.item)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("plural() error = %v, wantErr %v", err, tt.wantErr)
+			if err != nil {
+				assert.True(t, tt.wantErr)
 				return
 			}
-			if got != tt.want {
-				t.Errorf("plural() = %v, want %v", got, tt.want)
-			}
+
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
@@ -154,13 +155,12 @@ func Test_initPluraln(t *testing.T) {
 			fn := initPluraln(initPlural("ru", "|"))
 
 			got, err := fn(tt.args.num, tt.args.item)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("pluraln() error = %v, wantErr %v", err, tt.wantErr)
+			if err != nil {
+				assert.True(t, tt.wantErr)
 				return
 			}
-			if got != tt.want {
-				t.Errorf("pluraln() = %v, want %v", got, tt.want)
-			}
+
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
@@ -172,8 +172,7 @@ func Test_initAny(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want1   string
-		want2   string
+		want    []string
 		wantErr bool
 	}{
 		{
@@ -181,8 +180,7 @@ func Test_initAny(t *testing.T) {
 			args: args{
 				item: reflect.ValueOf("гофер|гошник"),
 			},
-			want1:   "гофер",
-			want2:   "гошник",
+			want:    []string{"гофер", "гошник"},
 			wantErr: false,
 		},
 		{
@@ -190,8 +188,7 @@ func Test_initAny(t *testing.T) {
 			args: args{
 				item: reflect.ValueOf([]string{"гофер", "гошник"}),
 			},
-			want1:   "гофер",
-			want2:   "гошник",
+			want:    []string{"гофер", "гошник"},
 			wantErr: false,
 		},
 		{
@@ -207,13 +204,12 @@ func Test_initAny(t *testing.T) {
 			fn := initAny("|")
 
 			got, err := fn(tt.args.item)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("any() error = %v, wantErr %v", err, tt.wantErr)
+			if err != nil {
+				assert.True(t, tt.wantErr)
 				return
 			}
-			if got != tt.want1 && got != tt.want2 {
-				t.Errorf("any() = %v, want %v or %v", got, tt.want1, tt.want2)
-			}
+
+			assert.Contains(t, tt.want, got, "got %s, but wanted %v", got, tt.want)
 		})
 	}
 }
@@ -225,8 +221,7 @@ func Test_initfAny(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want1   string
-		want2   string
+		want    []string
 		wantErr bool
 	}{
 		{
@@ -237,8 +232,7 @@ func Test_initfAny(t *testing.T) {
 					reflect.ValueOf("гошник"),
 				},
 			},
-			want1:   "гофер",
-			want2:   "гошник",
+			want:    []string{"гофер", "гошник"},
 			wantErr: false,
 		},
 		{
@@ -249,8 +243,7 @@ func Test_initfAny(t *testing.T) {
 					reflect.ValueOf(2),
 				},
 			},
-			want1:   "1",
-			want2:   "2",
+			want:    []string{"1", "2"},
 			wantErr: false,
 		},
 	}
@@ -259,13 +252,12 @@ func Test_initfAny(t *testing.T) {
 			fn := initAnyf()
 
 			got, err := fn(tt.args.items...)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("any() error = %v, wantErr %v", err, tt.wantErr)
+			if err != nil {
+				assert.True(t, tt.wantErr)
 				return
 			}
-			if got != tt.want1 && got != tt.want2 {
-				t.Errorf("any() = %v, want %v or %v", got, tt.want1, tt.want2)
-			}
+
+			assert.Contains(t, tt.want, got, "got %s, but wanted %v", got, tt.want)
 		})
 	}
 }

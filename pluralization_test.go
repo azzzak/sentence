@@ -2,6 +2,8 @@ package sentence
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_pluralEnglish(t *testing.T) {
@@ -27,9 +29,8 @@ func Test_pluralEnglish(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := pluralEnglish(tt.args.n, tt.args.forms); got != tt.want {
-				t.Errorf("pluralEnglish() = %v, want %v", got, tt.want)
-			}
+			got := pluralEnglish(tt.args.n, tt.args.forms)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
@@ -96,9 +97,8 @@ func Test_pluralRussian(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := pluralRussian(tt.args.n, tt.args.forms); got != tt.want {
-				t.Errorf("pluralRussian() = %v, want %v", got, tt.want)
-			}
+			got := pluralRussian(tt.args.n, tt.args.forms)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
